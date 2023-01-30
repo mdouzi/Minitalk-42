@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdouzi <mdouzi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/19 16:26:56 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/01/30 16:02:59 by mdouzi           ###   ########.fr       */
+/*   Created: 2023/01/30 14:30:06 by mdouzi            #+#    #+#             */
+/*   Updated: 2023/01/30 14:53:35 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,19 +73,35 @@ void	send_message(char *str, int pid)
 	bin[k] = '\0';
 	j = 0;
 	send_sig(bin, pid);
+	send_sig("00000000", pid);
 	free(bin);
+}
+
+void	sig_handler1(int sig, siginfo_t *dsisa, void *vv)
+{
+	(void)dsisa;
+	(void)vv;
+	if (sig == SIGUSR1)
+	{
+		ft_printf("message wsel\n");
+		exit(0);
+	}
 }
 
 int	main(int argc, char *argv[])
 {
-	int		pid;
-	char	*str;
+	int					pid;
+	char				*str;
+	struct sigaction	sa;
 
 	if (argc != 3)
 	{
 		ft_printf("something went wrong");
 		exit(1);
 	}
+	sa.sa_sigaction = sig_handler1;
+	sa.sa_flags = SA_SIGINFO;
+	sigaction(SIGUSR1, &sa, NULL);
 	pid = ft_atoi(argv[1]);
 	if (pid == -1)
 	{
@@ -94,5 +110,7 @@ int	main(int argc, char *argv[])
 	}
 	str = argv[2];
 	send_message(str, pid);
+	while (1)
+		pause();
 	return (0);
 }

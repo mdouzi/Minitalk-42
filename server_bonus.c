@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdouzi <mdouzi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/19 16:27:06 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/01/30 16:56:32 by mdouzi           ###   ########.fr       */
+/*   Created: 2023/01/30 14:30:50 by mdouzi            #+#    #+#             */
+/*   Updated: 2023/01/30 14:31:07 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	g_byte[9];
 
-void	ft_power(char *p)
+void	ft_power(char *p, int pid)
 {
 	int	x;
 	int	crt;
@@ -29,6 +29,10 @@ void	ft_power(char *p)
 			crt = crt + y;
 		y = y * 2;
 		x--;
+	}
+	if (crt == 0)
+	{
+		kill(pid, SIGUSR1);
 	}
 	write(1, &crt, 1);
 }
@@ -54,7 +58,7 @@ void	sig_handler(int sig, siginfo_t *dsisa, void *vv)
 	{
 		i = 0;
 		g_byte[8] = '\0';
-		ft_power(g_byte);
+		ft_power(g_byte, pid);
 	}
 }
 
