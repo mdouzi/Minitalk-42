@@ -6,7 +6,7 @@
 /*   By: mdouzi <mdouzi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:26:56 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/01/24 22:23:41 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/01/30 10:00:53 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ void	send_message(char *str, int pid)
 	int		j;
 	int		k;
 	char	*bin;
+	char	*tmp;
 
-	j = 0;
 	i = 0;
 	k = 0;
 	bin = (char *)malloc((sizeof(char) * ft_strlen(str) * 8) + 1);
@@ -65,7 +65,8 @@ void	send_message(char *str, int pid)
 		j = 0;
 		while (j < 8)
 		{
-			bin[k] = to_binary((unsigned char)str[i])[j];
+			tmp = to_binary((unsigned char)str[i]);
+			bin[k] = tmp[j];
 			j++;
 			k++;
 		}
@@ -88,6 +89,11 @@ int	main(int argc, char *argv[])
 		exit(1);
 	}
 	pid = ft_atoi(argv[1]);
+	if (pid == -1)
+	{
+		ft_printf("machi pid hadi");
+		exit(1);
+	}
 	str = argv[2];
 	send_message(str, pid);
 	return (0);
